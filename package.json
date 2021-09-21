@@ -1,0 +1,15 @@
+{
+  "name": "json-editor",
+  "version": "1.0.0",
+  "description": "JSON editor tool for developer, coder, reduce your time to play with JSON",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "laptrinhdeom.xyz",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.1.1",
+    "jsoneditor": "^9.5.5"
+  }
+}

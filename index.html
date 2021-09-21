@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>JSON Editor - laptrinhdeom.xyz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="JSON editor is a tool for developer/coder save time to play with JSON, load JSON from file, edit, save to file or save to online and share your link"
+    />
+    <meta name="author" content="laptrinhdeom.xyz" />
+    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:version" content="1.0" />
+
+    <link href="libs/jsoneditor.min.css" rel="stylesheet" type="text/css" />
+    <script src="libs/jsoneditor.min.js"></script>
+
+    <script src="libs/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="libs/bootstrap.min.css" />
+
+    <script src="libs/filereader.js"></script>
+    <script src="libs/FileSaver.min.js"></script>
+
+    <style type="text/css">
+      a {
+        cursor: pointer;
+      }
+
+      #jsoneditor-code {
+        width: 100%;
+        height: calc(100vh - 80px);
+        margin-right: 10px;
+        display: inline-block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="Navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="">JSON Editor</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbar"
+          aria-controls="navbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="https://www.laptrinhdeom.xyz"
+                >Blog</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://jwt.laptrinhdeom.xyz">JWT</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid mt-3">
+      <div class="btn-toolbar mb-3 align-items-center" role="toolbar">
+        <div class="me-3">Select view mode:</div>
+
+        <div
+          class="btn-group me-auto"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="mode-code"
+            autocomplete="off"
+            checked
+            onclick="changeViewMode('code')"
+          />
+          <label class="btn btn-outline-secondary" for="mode-code">Code</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="mode-tree"
+            autocomplete="off"
+            onclick="changeViewMode('tree')"
+          />
+          <label class="btn btn-outline-secondary" for="mode-tree">Tree</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="mode-form"
+            autocomplete="off"
+            onclick="changeViewMode('form')"
+          />
+          <label class="btn btn-outline-secondary" for="mode-form">Form</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="mode-text"
+            autocomplete="off"
+            onclick="changeViewMode('text')"
+          />
+          <label class="btn btn-outline-secondary" for="mode-text">Text</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="btnradio"
+            id="mode-preview"
+            autocomplete="off"
+            onclick="changeViewMode('preview')"
+          />
+          <label class="btn btn-outline-secondary" for="mode-preview"
+            >Preview</label
+          >
+        </div>
+
+        <div>
+          <button class="btn btn-secondary">New</button>
+
+          <div class="btn-group" role="group">
+            <button
+              id="btnGroupDropdown"
+              type="button"
+              class="btn btn-success dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Save
+            </button>
+
+            <ul class="dropdown-menu" aria-labelledby="btnGroupDropdown">
+              <li>
+                <a class="dropdown-item" id="saveToFile">Save to file...</a>
+              </li>
+
+              <li><a class="dropdown-item" id="saveOnline">Save online</a></li>
+            </ul>
+          </div>
+
+          <button
+            class="btn btn-info"
+            onclick="document.getElementById('loadFromFileInput').click()"
+          >
+            Load from file...
+          </button>
+          <input
+            type="file"
+            id="loadFromFileInput"
+            value="Load from file..."
+            style="display: none"
+          />
+        </div>
+      </div>
+
+      <div id="jsoneditor-code"></div>
+    </div>
+
+    <script>
+      const editorCode = new JSONEditor(
+        document.getElementById("jsoneditor-code"),
+        {
+          mode: "code",
+        }
+      );
+
+      function changeViewMode(mode) {
+        editorCode.setMode(mode);
+      }
+    </script>
+
+    <script>
+      FileReaderJS.setupInput(document.getElementById("loadFromFileInput"), {
+        readAsDefault: "Text",
+        on: {
+          load: function (event, file) {
+            editorCode.setText(event.target.result);
+          },
+        },
+      });
+    </script>
+
+    <script>
+      document.getElementById("saveToFile").onclick = function () {
+        let fname = window.prompt("Save as...");
+
+        if (!fname) {
+          return;
+        }
+
+        fname = fname.replace(".json", "") + ".json";
+
+        const blob = new Blob([editorCode.getText()], {
+          type: "application/json;charset=utf-8",
+        });
+
+        saveAs(blob, fname);
+      };
+    </script>
+  </body>
+</html>
